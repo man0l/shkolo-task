@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Button;
 use App\Http\Requests\StoreButtonRequest;
 use App\Http\Requests\UpdateButtonRequest;
-
+use Illuminate\Support\Facades\Log;
 class ButtonsController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class ButtonsController extends Controller
      */
     public function index()
     {
-        $buttons = Button::all();
+        $buttons = Button::orderBy('order', 'asc')->get();
         return response()->json($buttons);
     }
 
@@ -22,8 +22,16 @@ class ButtonsController extends Controller
      */
     public function store(StoreButtonRequest $request)
     {
-        $button = Button::create($request->all());
-        return response()->json($button, 201);
+        try {
+            $button = Button::create($request->validated());
+            return response()->json($button, 201);
+        } catch (\Exception $e) {
+            Log::error('Failed to create button', [
+                'error' => $e->getMessage(),
+                'data' => $request->validated()
+            ]);
+            throw $e;
+        }
     }
 
     /**
@@ -39,8 +47,17 @@ class ButtonsController extends Controller
      */
     public function update(UpdateButtonRequest $request, Button $button)
     {
-        $button->update($request->all());
-        return response()->json($button);
+        try {
+            $button->update($request->validated());
+            return response()->json($button);
+        } catch (\Exception $e) {
+            Log::error('Failed to update button', [
+                'id' => $button->id,
+                'error' => $e->getMessage(),
+                'data' => $request->validated()
+            ]);
+            throw $e;
+        }
     }
 
     /**
@@ -48,7 +65,15 @@ class ButtonsController extends Controller
      */
     public function destroy(Button $button)
     {
-        $button->delete();
-        return response()->noContent();
+        try {
+            $button->delete();
+            return response()->noContent();
+        } catch (\Exception $e) {
+            Log::error('Failed to delete button', [
+                'id' => $button->id,
+                'error' => $e->getMessage()
+            ]);
+            throw $e;
+        }
     }
 }
