@@ -25,7 +25,7 @@ class StoreButtonRequest extends FormRequest
             'title' => 'required|string|max:255',
             'link' => 'required|string|max:255',
             'color' => 'required|string|max:255',
-            'order' => 'required|integer',
+            'order' => 'required|integer|min:1|max:9|unique:buttons,order',
         ];
     }
 }
