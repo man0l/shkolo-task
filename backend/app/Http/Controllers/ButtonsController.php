@@ -42,4 +42,13 @@ class ButtonsController extends Controller
         $button->update($request->all());
         return response()->json($button);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Button $button)
+    {
+        $button->delete();
+        return response()->noContent();
+    }
 }
