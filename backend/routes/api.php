@@ -9,4 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::apiResource('buttons', ButtonsController::class);
+Route::apiResource('buttons', ButtonsController::class)->middleware('cors');
