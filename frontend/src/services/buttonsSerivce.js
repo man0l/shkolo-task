@@ -49,7 +49,17 @@ export const deleteButton = async (id) => {
         method: 'DELETE',
         redirect: 'follow'
     });
-    return response.json();
+    
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to delete button (${response.status}): ${errorText || 'Unknown error'}`);
+    }
+    
+    if (response.status === 204) {
+        return true;
+    }
+
+    return false;
 }
 
 export const getButton = async (id) => {
