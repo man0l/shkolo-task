@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getButtons } from '../../services/buttonsSerivce';
 import { HiMiniPlus } from "react-icons/hi2";
-
+import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
+import { Link } from 'react-router-dom';
 
 const ButtonsList = () => {
     const [buttons, setButtons] = useState([]);
@@ -18,7 +19,17 @@ const ButtonsList = () => {
                     <div
                         key={index}
                         className="bg-gray-200 rounded-md items-center justify-center flex w-full aspect-2/1"
-                    > <HiMiniPlus />
+                    >
+                    {buttons[index + 1] ? (
+                        <Link to={buttons[index + 1].link}>
+                            <HiOutlineArrowTopRightOnSquare />
+                        </Link>
+                    ) : (
+                        <Link to={`/button/add/${index}`}>
+                            <HiMiniPlus />
+                        </Link>
+                    )}
+                    
                     </div>
                 ))}
                 </div>
