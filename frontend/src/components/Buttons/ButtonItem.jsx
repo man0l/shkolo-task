@@ -30,8 +30,9 @@ const ButtonItem = ({ position, buttonForThisPosition, onDeleteButton }) => {
         >
             {buttonForThisPosition ? (
                 <>
-                    <Link to={buttonForThisPosition.link} className="flex flex-col items-center">
-                        <HiOutlineArrowTopRightOnSquare />                        
+                    <Link to={buttonForThisPosition.link} className="flex flex-col items-center" style={{ color: buttonForThisPosition.color }}>
+                        <HiOutlineArrowTopRightOnSquare />  
+                        <span className="text-sm mt-1">{buttonForThisPosition.title}</span>
                     </Link>
                     
                     {isHovered && (

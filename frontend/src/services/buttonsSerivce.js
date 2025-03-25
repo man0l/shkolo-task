@@ -41,7 +41,19 @@ export const updateButton = async (button) => {
         body: JSON.stringify(button),
         redirect: 'follow'
     });
-    return response.json();
+    
+    if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+            errorData = JSON.parse(errorText);
+        } catch (e) {
+            throw new Error(`Server error (${response.status}): ${errorText || 'Unknown error'}`);
+        }
+        throw errorData;
+    }
+    
+    return await response.json();
 }
 
 export const deleteButton = async (id) => {
