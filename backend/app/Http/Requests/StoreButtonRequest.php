@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreButtonRequest extends FormRequest
 {
@@ -27,5 +29,12 @@ class StoreButtonRequest extends FormRequest
             'color' => 'required|string|max:255',
             'order' => 'required|integer|min:1|max:9|unique:buttons,order',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors()
+        ], 422));
     }
 }
